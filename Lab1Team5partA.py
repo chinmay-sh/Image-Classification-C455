@@ -1,6 +1,6 @@
 # Team Members:
 # Chinmay Sharma 300157594
-# Sahib 
+# Sahibdeep Singh
 
 import random
 

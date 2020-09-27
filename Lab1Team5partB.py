@@ -1,12 +1,14 @@
 # Team Members:
 # Chinmay Sharma 300157594
-# Sahib 
+# Sahibdeep Singh
 
 import random
 import os
 import shutil
 
 fileName = "random.txt"
+
+fileCounter = 0
 
 random.seed(10)
 
@@ -20,13 +22,13 @@ def fileWrite():
     f.close()
 
 
-def readAndSplitFile():
+def readAndSplitSortFile():
     fileCleanup()
-    print("\nReading and split 1 Million file ..." )
+    print("\nReading and split sorting 1 Million file ..." )
     readNums = []
     f = open(fileName,'r')
     counter = 0
-    fileCounter = 0
+    global fileCounter
     os.mkdir('./temp/')
     for line in f:
         # print(int(line))
@@ -34,6 +36,7 @@ def readAndSplitFile():
         readNums.append(int(line))
         if (counter % 10 == 0):
             fx = open('./temp/file' + str(fileCounter) + '.txt','w')
+            readNums = sorted(readNums)
             for i in readNums:
                 fx.write(str(i) + '\n')
             readNums.clear()
@@ -47,4 +50,11 @@ def fileCleanup():
         shutil.rmtree('./temp')
 
 
-readAndSplitFile()
+readAndSplitSortFile()
+
+print(fileCounter)
+
+minValList = ['X' for i in range(fileCounter)]
+
+# def minValListPopulator():
+
