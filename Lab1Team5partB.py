@@ -77,8 +77,10 @@ print(minValList)
 
 FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(fileCounter)]
 
-# def minValListPopulator():
-
+def minValListPopulator():
+    for i in range(len(minValList)):
+        if minValList[i] == 0:
+            minValList[i] = int(FileArrList[i].getTopElm())
 
 # f0 = FileArr('./temp/file0.txt')
 
@@ -88,10 +90,31 @@ FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(fileCount
 # f0.closeFile()
 
 
-print(FileArrList[0].getTopElm())
-print(FileArrList[1].getTopElm())
-print(FileArrList[0].getTopElm())
+# print(FileArrList[0].getTopElm())
+# print(FileArrList[1].getTopElm())
+# print(FileArrList[0].getTopElm())
 
+
+minValListPopulator()
+
+print(minValList)
+
+def sortedFileMaker():
+    f = open('random1MSorted.txt', "a")
+    print("Writing 1 Million sorted file ...")
+    # for i in range(1):
+    index = minValList.index(min(minValList))
+    line = min(minValList)
+    minValList[index] = 0
+    f.write(str(line) + '\n')
+        # print(line)
+    f.close()
+
+
+for i in range(100):
+    sortedFileMaker()
+    minValListPopulator()
+    print(minValList)
 
 for i in FileArrList:
     i.closeFile()
