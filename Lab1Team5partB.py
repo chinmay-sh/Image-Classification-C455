@@ -6,9 +6,13 @@ import random
 import os
 import shutil
 
-fileName = "random.txt"
+fileName = "random1M.txt"
 
 num_splitFiles = 0
+
+nums_per_file = 1000
+
+randoms_to_create = 1000000
 
 random.seed(10)
 
@@ -34,7 +38,7 @@ class FileArr:
 def fileWrite():
     f = open(fileName, "w")
     print("Writing 1 Million file ...")
-    for i in range(100):
+    for i in range(randoms_to_create):
         line = str(random.randint(1,99))
         f.write(line + '\n')
         # print(line) 
@@ -42,7 +46,7 @@ def fileWrite():
 
 
 def splitFiles():
-    fileCleanup()
+    tempFileCleanup()
     print("\nSplit sorting 1 Million file ..." )
     readNums = []
     f = open(fileName,'r')
@@ -53,7 +57,7 @@ def splitFiles():
         # print(int(line))
         counter+=1
         readNums.append(int(line))
-        if (counter % 10 == 0):
+        if (counter % nums_per_file == 0):
             fx = open('./temp/file' + str(num_splitFiles) + '.txt','w')
             readNums = sorted(readNums)
             for i in readNums:
@@ -62,7 +66,7 @@ def splitFiles():
             num_splitFiles+=1
     f.close()
 
-def fileCleanup():
+def tempFileCleanup():
     if os.path.exists("file0"):
         os.remove("file0")
     if os.path.exists('./temp'):
@@ -81,19 +85,6 @@ def sortedFileMaker():
     minValList[index] = 0
     f.write(str(line) + '\n')
     f.close()
-
-# Creating Split Files
-splitFiles()
-
-# Print no. of files created after splitting
-print('No. of Temp Split Files: ',num_splitFiles)
-
-# Initializing list to hold minimum values from all the sub files
-minValList = [0 for i in range(num_splitFiles)]  # a list to contain minimum values from all the files
-
-# List to hold opened files as FileArr class instances
-FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(num_splitFiles)]
-
 
 def sort():
     # populate sorter array for first time
@@ -114,7 +105,23 @@ def sort():
     # close all temp files and remove them
     for i in FileArrList:
         i.closeFile()
-    # fileCleanup()
+    # tempFileCleanup()
+
+tempFileCleanup()
+
+fileWrite()
+
+# Creating Split Files
+splitFiles()
+
+# Print no. of files created after splitting
+print('No. of Temp Split Files: ',num_splitFiles)
+
+# Initializing list to hold minimum values from all the sub files
+minValList = [0 for i in range(num_splitFiles)]  # a list to contain minimum values from all the files
+
+# List to hold opened files as FileArr class instances
+FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(num_splitFiles)]
 
 # Calling Main Sorting Function
 sort()
