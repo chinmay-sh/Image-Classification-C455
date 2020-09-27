@@ -47,7 +47,7 @@ def fileWrite():
 
 def splitFiles():
     tempFileCleanup()
-    print("\nSplit sorting 1 Million file ..." )
+    print("\nSplitting 1 Million file ..." )
     readNums = []
     f = open(fileName,'r')
     counter = 0
@@ -107,15 +107,19 @@ def sort():
         i.closeFile()
     # tempFileCleanup()
 
+    print('\nSorting Complete!')
+
+# Clean older temp files
 tempFileCleanup()
 
+# write the 1 M random num file
 fileWrite()
 
 # Creating Split Files
 splitFiles()
 
 # Print no. of files created after splitting
-print('No. of Temp Split Files: ',num_splitFiles)
+print('\nNo. of split files created: ',num_splitFiles)
 
 # Initializing list to hold minimum values from all the sub files
 minValList = [0 for i in range(num_splitFiles)]  # a list to contain minimum values from all the files
