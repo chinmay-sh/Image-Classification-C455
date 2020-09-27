@@ -4,6 +4,7 @@
 
 import random
 import os
+import shutil
 
 fileName = "random.txt"
 
@@ -18,25 +19,32 @@ def fileWrite():
         # print(line) 
     f.close()
 
-def sortSmallArr(arr):
-    return sorted(arr)
 
 def readAndSplitFile():
+    fileCleanup()
     print("\nReading and split 1 Million file ..." )
-    readNums1000 = []
+    readNums = []
     f = open(fileName,'r')
     counter = 0
     fileCounter = 0
+    os.mkdir('./temp/')
     for line in f:
         # print(int(line))
-        if (counter % 10 == 0 and counter != 0):
-            fx = open('file' + str(fileCounter) + '.txt','w')
-            for i in readNums1000:
-                fx.write(str(i) + '\n')
-            readNums1000.clear()
-        readNums1000.append(int(line))
         counter+=1
+        readNums.append(int(line))
+        if (counter % 10 == 0):
+            fx = open('./temp/file' + str(fileCounter) + '.txt','w')
+            for i in readNums:
+                fx.write(str(i) + '\n')
+            readNums.clear()
+            fileCounter+=1
     f.close()
-    
+
+def fileCleanup():
+    if os.path.exists("file0"):
+        os.remove("file0")
+    if os.path.exists('./temp'):
+        shutil.rmtree('./temp')
+
 
 readAndSplitFile()
