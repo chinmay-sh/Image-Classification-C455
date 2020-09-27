@@ -19,6 +19,8 @@ class FileArr:
 
     def getTopElm(self):
         number = self.fileVar.readline()
+        if(number == ''):
+            return '100'
         return number
     
     def openFile(self, fileName):
