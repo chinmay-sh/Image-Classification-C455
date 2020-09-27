@@ -78,13 +78,11 @@ def minValListPopulator():
             minValList[i] = int(FileArrList[i].getTopElm())
 
 
-def sortedFileMaker():
-    f = open('random1MSorted.txt', "a")
+def sortedFileMaker(f):
     index = minValList.index(min(minValList))
     line = min(minValList)
     minValList[index] = 0
     f.write(str(line) + '\n')
-    f.close()
 
 def sort():
     # populate sorter array for first time
@@ -95,12 +93,14 @@ def sort():
         os.remove('random1MSorted.txt')
 
     # sort all files until sorter array has all elements as 100
+    f = open('random1MSorted.txt', "a")
     while True:
         if(min(minValList) == 100):
             break
-        sortedFileMaker()
+        sortedFileMaker(f)
         minValListPopulator()
         # print(minValList)
+    f.close()
 
     # close all temp files and remove them
     for i in FileArrList:
@@ -123,6 +123,7 @@ print('\nNo. of split files created: ',num_splitFiles)
 
 # Initializing list to hold minimum values from all the sub files
 minValList = [0 for i in range(num_splitFiles)]  # a list to contain minimum values from all the files
+print('\nSize of sorting array holding min vals:',len(minValList))
 
 # List to hold opened files as FileArr class instances
 FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(num_splitFiles)]
