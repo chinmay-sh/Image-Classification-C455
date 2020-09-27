@@ -12,6 +12,23 @@ fileCounter = 0
 
 random.seed(10)
 
+class FileArr:
+    def __init__(self, fileName):
+        self.fileVar = self.openFile(fileName)
+        self.headCounter = 0
+
+    def getTopElm(self):
+        number = self.fileVar.readline()
+        return number
+    
+    def openFile(self, fileName):
+        return open(fileName,'r')
+
+    def closeFile(self):
+        self.fileVar.close()
+
+
+
 def fileWrite():
     f = open(fileName, "w")
     print("Writing 1 Million file ...")
@@ -54,7 +71,27 @@ readAndSplitSortFile()
 
 print(fileCounter)
 
-minValList = ['X' for i in range(fileCounter)]
+minValList = [0 for i in range(fileCounter)]  # a list to contain minimum values from all the files
+
+print(minValList)
+
+FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(fileCounter)]
 
 # def minValListPopulator():
 
+
+# f0 = FileArr('./temp/file0.txt')
+
+# for i in range(10):
+#     print(f0.getTopElm())
+
+# f0.closeFile()
+
+
+print(FileArrList[0].getTopElm())
+print(FileArrList[1].getTopElm())
+print(FileArrList[0].getTopElm())
+
+
+for i in FileArrList:
+    i.closeFile()
