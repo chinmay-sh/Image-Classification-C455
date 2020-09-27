@@ -110,6 +110,8 @@ def sortedFileMaker():
         # print(line)
     f.close()
 
+if os.path.exists('random1MSorted.txt'):
+    os.remove('random1MSorted.txt')
 
 for i in range(100):
     sortedFileMaker()
