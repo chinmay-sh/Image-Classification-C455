@@ -1,10 +1,11 @@
 # Team Members:
 # Chinmay Sharma 300157594
-# Sahibdeep Singh
+# Sahibdeep Singh 300156800
 
 import random
 import os
 import shutil
+
 
 fileName = "random1M.txt"
 
@@ -109,6 +110,16 @@ def sort():
 
     print('\nSorting Complete!')
 
+def numPos():
+
+    print('\nValues on line 7000, 95,895 and 781,020 respectively: ')
+    file=open('random1MSorted.txt')
+    lineRead=[7001, 95896, 781021]
+    for position, line in enumerate(file):
+        if position in lineRead:
+            print(line)
+    file.close()
+
 # Clean older temp files
 tempFileCleanup()
 
@@ -130,3 +141,6 @@ FileArrList = [FileArr('./temp/file' + str(i) + '.txt') for i in range(num_split
 
 # Calling Main Sorting Function
 sort()
+
+# Calling the function which tells the numbers on a certain given position
+numPos()
