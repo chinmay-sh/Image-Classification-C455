@@ -68,8 +68,6 @@ def splitFiles():
     f.close()
 
 def tempFileCleanup():
-    if os.path.exists("file0"):
-        os.remove("file0")
     if os.path.exists('./temp'):
         shutil.rmtree('./temp')
 
@@ -111,10 +109,9 @@ def sort():
     print('\nSorting Complete!')
 
 def numPos():
-
     print('\nValues on line 7000, 95,895 and 781,020 respectively: ')
     file=open('random1MSorted.txt')
-    lineRead=[7001, 95896, 781021]
+    lineRead=[6999, 95894, 781019]      # because line starts from 0 index
     for position, line in enumerate(file):
         if position in lineRead:
             print(line)
