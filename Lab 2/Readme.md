@@ -57,13 +57,13 @@ Rules to follow:
 
  - Rules ( to follow strictly, otherwise you will not get any mark)
 
-  - Rule1: you cannot use array ( or collection, or dictionary or objects or anything else) of size more than 1000 
+    - Rule1: you cannot use array ( or collection, or dictionary or objects or anything else) of size more than 1000 
 
-  - Rule2: you cannot read the entire file, load numbers into memory (in an array or something) and then start the process.
+    - Rule2: you cannot read the entire file, load numbers into memory (in an array or something) and then start the process.
 
-  - Rule3: treat the A.txt and B.txt as if it is too big to fit in memory all at once; treat it like a 100GB file. I did not ask you to generate 100 billion numbers and store them in a file as it would take hours to create that file and the file size would be too large to fit in your hard drive. 
+    - Rule3: treat the A.txt and B.txt as if it is too big to fit in memory all at once; treat it like a 100GB file. I did not ask you to generate 100 billion numbers and store them in a file as it would take hours to create that file and the file size would be too large to fit in your hard drive. 
 
-  - Rule4: In the implementation of your genJaccard() you cannot assume that the length of the files is given to your functions, or it is exactly one million lines. Your function has to work with any files with any length. 
+    - Rule4: In the implementation of your genJaccard() you cannot assume that the length of the files is given to your functions, or it is exactly one million lines. Your function has to work with any files with any length. 
 
  
 
