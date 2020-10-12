@@ -3,8 +3,6 @@
 # Sahibdeep Singh 300156800
 
 import random
-import os
-import shutil
 
 
 fileName1 = "A.txt"
