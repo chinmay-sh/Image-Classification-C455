@@ -98,3 +98,20 @@ Rules to follow:
  * Up to -3 marks will be deducted for wrong answers 
 
  * U to 6 marks will be deducted if rules were not followed
+
+
+### Strategy for Part B:
+```python
+testA1 = {19,2,14,16,19,1,7,15,16,9}
+testB1 = {12,2,14,5,20,11,13,14,10,2982}
+
+testA2 = {21,6,2,17,16,11,3,8,24}
+testB2 = {9,24,16,22,110,21,12,5,15}
+
+x = genJaccard(testA1,testB1)
+y = genJaccard(testA2,testB2)
+print(x)
+print(y)
+
+print(x + y)
+```
