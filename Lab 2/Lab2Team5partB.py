@@ -5,6 +5,7 @@
 import random
 import os
 import shutil
+import sys
 
 fileName1 = "A.txt"
 fileName2 = "B.txt"
@@ -44,7 +45,7 @@ def genJaccard(setA,setB):
 
 def fileWrite1():
     f = open(fileName1, "w")
-    print("Writing 1 Million file ...")
+    print("Writing 1 Million A.txt file ...")
     for i in range(randoms_to_create):
         line = str(random.randint(1,10000000))
         f.write(line + '\n')
@@ -53,24 +54,24 @@ def fileWrite1():
 
 def fileWrite2():
     f = open(fileName2, "w")
-    print("Writing 1 Million file ...")
+    print("Writing 1 Million B.txt file ...")
     for i in range(randoms_to_create):
         line = str(random.randint(1,10000000))
         f.write(line + '\n')
         # print(line) 
     f.close()
 
-def tempFileCleanupA():
+def tempFileCleanup():
     if os.path.exists("A.txt"):
         os.remove("A.txt")
     if os.path.exists('./tempA'):
         shutil.rmtree('./tempA')
 
-def tempFileCleanupB():
     if os.path.exists("B.txt"):
         os.remove("B.txt")
     if os.path.exists('./tempB'):
         shutil.rmtree('./tempB')
+   
 
 def splitFilesA():
     print("\nSplitting A.txt file ..." )
@@ -126,7 +127,9 @@ def setMakerB(partFile):
 
 def splitFilesReader():
     global jaccardValue
+    print("\nStarting Calculation: \n")
     for i in range(num_splitFiles_A):
+        sys.stdout.write('\r')
         partFileA = FileArr('./tempA/file' + str(i) + '.txt')
         partFileB = FileArr('./tempB/file' + str(i) + '.txt')
 
@@ -138,10 +141,13 @@ def splitFilesReader():
 
         jaccardValue += genJaccard(setA,setB)
 
+        # set progress
+        sys.stdout.write("[{:20}] {} %".format('=='*int(round(i/1000,1)*10), 10*int(round(i/1000,1)*10)))
+        sys.stdout.flush()
+
 
 # Clean older temp files
-tempFileCleanupA()
-tempFileCleanupB()
+tempFileCleanup()
 
 # write the 1 M random num file
 fileWrite1()
@@ -158,6 +164,4 @@ print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
 
 splitFilesReader()
 
-print('Estimated Jaccard Value', jaccardValue)
-
-
+print('\n\nEstimated Jaccard Value', jaccardValue)
