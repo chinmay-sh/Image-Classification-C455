@@ -24,8 +24,6 @@ random.seed(10)
 setA = set([])
 setB = set([])
 
-jaccardValue = 0
-
 class FileArr:
     def __init__(self, fileName):
         self.fileVar = self.openFile(fileName)
@@ -41,9 +39,9 @@ class FileArr:
         self.fileVar.close()
 
 
-def genJaccard(setA,setB):
-    # return (len(setA & setB) / len(setA | setB))
-    return (len(setA.intersection(setB)) / len(setA.union(setB)))
+# def JaccardCal(setA,setB):
+#     # return (len(setA & setB) / len(setA | setB))
+#     return (len(setA.intersection(setB)) / len(setA.union(setB)))
 
 def fileWrite1():
     f = open(fileName1, "w")
@@ -127,8 +125,7 @@ def setMakerB(partFile):
     for i in listToLoad:
         setB.add(i)
 
-def splitFilesReader():
-    global jaccardValue
+def genJaccard():
     print("\nStarting Calculation: \n")
     for i in range(num_splitFiles_A):
         sys.stdout.write('\r')
@@ -141,8 +138,6 @@ def splitFilesReader():
         partFileA.closeFile()
         partFileB.closeFile()
 
-        jaccardValue += genJaccard(setA,setB)
-
         for d in setA:
             m1.update(d.encode('utf8'))
         for d in setB:
@@ -153,7 +148,7 @@ def splitFilesReader():
         sys.stdout.flush()
 
 
-m1, m2 = MinHash(), MinHash()
+m1, m2 = MinHash(num_perm=512), MinHash(num_perm=512)
 
 
 # Clean older temp files
@@ -172,17 +167,20 @@ print('\nNo. of split files created for A.txt : ',num_splitFiles_A)
 
 print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
 
-splitFilesReader()
+genJaccard()
 
 # print('\n\nEstimated Jaccard Value', jaccardValue)
 
 print("\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
 
 
-file1 = FileArr('./A.txt')
-file2 = FileArr('./B.txt')
+# file1 = FileArr('./A.txt')
+# file2 = FileArr('./B.txt')
 
-setMakerA(file1)
-setMakerB(file2)
+# setMakerA(file1)
+# setMakerB(file2)
 
-print('jac original', genJaccard(setA,setB))
+# print('jac original', JaccardCal(setA,setB))
+
+
+# print(JaccardCal({0,1},{1,1}))
