@@ -17,7 +17,7 @@ num_splitFiles_A = 0
 
 num_splitFiles_B = 0
 
-randoms_to_create = 10000
+randoms_to_create = 1000000
 
 random.seed(10)
 
@@ -176,4 +176,13 @@ splitFilesReader()
 
 # print('\n\nEstimated Jaccard Value', jaccardValue)
 
-print("Estimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
+print("\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
+
+
+file1 = FileArr('./A.txt')
+file2 = FileArr('./B.txt')
+
+setMakerA(file1)
+setMakerB(file2)
+
+print('jac original', genJaccard(setA,setB))
