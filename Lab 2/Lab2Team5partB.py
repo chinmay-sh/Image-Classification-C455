@@ -2,6 +2,13 @@
 # Chinmay Sharma 300157594
 # Sahibdeep Singh 300156800
 
+
+"""
+Install MinHash using:
+
+pip install datasketch
+"""
+
 import random
 import os
 import shutil
