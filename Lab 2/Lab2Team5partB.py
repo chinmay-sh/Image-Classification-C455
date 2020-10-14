@@ -6,6 +6,7 @@ import random
 import os
 import shutil
 import sys
+from datasketch import MinHash
 
 fileName1 = "A.txt"
 fileName2 = "B.txt"
@@ -16,7 +17,7 @@ num_splitFiles_A = 0
 
 num_splitFiles_B = 0
 
-randoms_to_create = 1000000
+randoms_to_create = 10000
 
 random.seed(10)
 
@@ -38,6 +39,7 @@ class FileArr:
     
     def closeFile(self):
         self.fileVar.close()
+
 
 def genJaccard(setA,setB):
     # return (len(setA & setB) / len(setA | setB))
@@ -141,9 +143,17 @@ def splitFilesReader():
 
         jaccardValue += genJaccard(setA,setB)
 
+        for d in setA:
+            m1.update(d.encode('utf8'))
+        for d in setB:
+            m2.update(d.encode('utf8'))
+
         # set progress
-        sys.stdout.write("[{:20}] {} %".format('=='*int(round(i/1000,1)*10), 10*int(round(i/1000,1)*10)))
+        sys.stdout.write("[{:20}] {} %".format('=='*int(round(i/nums_per_file,1)*10), 10*int(round(i/nums_per_file,1)*10)))
         sys.stdout.flush()
+
+
+m1, m2 = MinHash(), MinHash()
 
 
 # Clean older temp files
@@ -164,4 +174,6 @@ print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
 
 splitFilesReader()
 
-print('\n\nEstimated Jaccard Value', jaccardValue)
+# print('\n\nEstimated Jaccard Value', jaccardValue)
+
+print("Estimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
