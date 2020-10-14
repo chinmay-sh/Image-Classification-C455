@@ -8,9 +8,7 @@ import shutil
 import sys
 from datasketch import MinHash
 
-fileName1 = "A.txt"
-fileName2 = "B.txt"
-
+# globals
 nums_per_file = 1000
 
 num_splitFiles_A = 0
@@ -23,6 +21,9 @@ random.seed(10)
 
 setA = set([])
 setB = set([])
+
+m1, m2 = MinHash(num_perm=1024), MinHash(num_perm=1024)
+
 
 class FileArr:
     def __init__(self, fileName):
@@ -39,11 +40,11 @@ class FileArr:
         self.fileVar.close()
 
 
-# def JaccardCal(setA,setB):
-#     # return (len(setA & setB) / len(setA | setB))
-#     return (len(setA.intersection(setB)) / len(setA.union(setB)))
+def JaccardCal(setA,setB):
+    # return (len(setA & setB) / len(setA | setB))
+    return (len(setA.intersection(setB)) / len(setA.union(setB)))
 
-def fileWrite1():
+def fileWrite1(fileName1):
     f = open(fileName1, "w")
     print("Writing 1 Million A.txt file ...")
     for i in range(randoms_to_create):
@@ -52,7 +53,7 @@ def fileWrite1():
         # print(line) 
     f.close()
 
-def fileWrite2():
+def fileWrite2(fileName2):
     f = open(fileName2, "w")
     print("Writing 1 Million B.txt file ...")
     for i in range(randoms_to_create):
@@ -73,7 +74,7 @@ def tempFileCleanup():
         shutil.rmtree('./tempB')
    
 
-def splitFilesA():
+def splitFilesA(fileName1):
     print("\nSplitting A.txt file ..." )
     A = []
     f = open(fileName1,'r')
@@ -92,7 +93,7 @@ def splitFilesA():
             num_splitFiles_A+=1
     f.close()
 
-def splitFilesB():
+def splitFilesB(fileName2):
     print("\nSplitting B.txt file ..." )
     B = []
     f = open(fileName2,'r')
@@ -125,7 +126,11 @@ def setMakerB(partFile):
     for i in listToLoad:
         setB.add(i)
 
-def genJaccard():
+def genJaccard(file1,file2):
+    # Creating Split Files
+    splitFilesA(file1)
+    splitFilesB(file2)
+
     print("\nStarting Calculation: \n")
     for i in range(num_splitFiles_A):
         sys.stdout.write('\r')
@@ -148,39 +153,36 @@ def genJaccard():
         sys.stdout.flush()
 
 
-m1, m2 = MinHash(num_perm=512), MinHash(num_perm=512)
+def main():
+    fileName1 = "A.txt"
+    fileName2 = "B.txt"
+    
+    # Clean older temp files
+    tempFileCleanup()
+
+    # write the 1 M random num file
+    fileWrite1(fileName1)
+    fileWrite2(fileName2)
+
+    # Print no. of files created after splitting
+    print('\nNo. of split files created for A.txt : ',num_splitFiles_A)
+
+    print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
+
+    genJaccard(fileName1,fileName2)
+
+    # print('\n\nEstimated Jaccard Value', jaccardValue)
+
+    print("\n\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
 
 
-# Clean older temp files
-tempFileCleanup()
+    file1 = FileArr('./A.txt')
+    file2 = FileArr('./B.txt')
 
-# write the 1 M random num file
-fileWrite1()
-fileWrite2()
+    setMakerA(file1)
+    setMakerB(file2)
 
-# Creating Split Files
-splitFilesA()
-splitFilesB()
-
-# Print no. of files created after splitting
-print('\nNo. of split files created for A.txt : ',num_splitFiles_A)
-
-print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
-
-genJaccard()
-
-# print('\n\nEstimated Jaccard Value', jaccardValue)
-
-print("\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
+    print('jac original', JaccardCal(setA,setB))
 
 
-# file1 = FileArr('./A.txt')
-# file2 = FileArr('./B.txt')
-
-# setMakerA(file1)
-# setMakerB(file2)
-
-# print('jac original', JaccardCal(setA,setB))
-
-
-# print(JaccardCal({0,1},{1,1}))
+main()
