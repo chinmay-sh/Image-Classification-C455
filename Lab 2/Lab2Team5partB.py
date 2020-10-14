@@ -40,10 +40,6 @@ class FileArr:
         self.fileVar.close()
 
 
-def JaccardCal(setA,setB):
-    # return (len(setA & setB) / len(setA | setB))
-    return (len(setA.intersection(setB)) / len(setA.union(setB)))
-
 def fileWrite1(fileName1):
     f = open(fileName1, "w")
     print("Writing 1 Million A.txt file ...")
@@ -175,14 +171,6 @@ def main():
 
     print("\n\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
 
-
-    file1 = FileArr('./A.txt')
-    file2 = FileArr('./B.txt')
-
-    setMakerA(file1)
-    setMakerB(file2)
-
-    print('jac original', JaccardCal(setA,setB))
 
 
 main()
