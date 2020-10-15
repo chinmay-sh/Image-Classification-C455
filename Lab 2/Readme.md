@@ -102,16 +102,18 @@ Rules to follow:
 
 ### Strategy for Part B:
 ```python
-testA1 = {19,2,14,16,19,1,7,15,16,9}
-testB1 = {12,2,14,5,20,11,13,14,10,2982}
+A = {1,2,3}
+B = {1,5,3}
 
-testA2 = {21,6,2,17,16,11,3,8,24}
-testB2 = {9,24,16,22,110,21,12,5,15}
+jaccard_similarity = genJaccard({1},{1}) + genJaccard({2},{5}) + genJaccard({3},{3})
 
-x = genJaccard(testA1,testB1)
-y = genJaccard(testA2,testB2)
-print(x)
-print(y)
+print("Predicted",jaccard_similarity/3)
 
-print(x + y)
+# original
+print("original", genJaccard(A,B))
+```
+
+```
+Predicted 0.6666666666666666
+original 0.5
 ```
