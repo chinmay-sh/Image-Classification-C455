@@ -3,17 +3,9 @@
 # Sahibdeep Singh 300156800
 
 
-"""
-Install MinHash using:
-
-pip install datasketch
-"""
-
 import random
 import os
 import shutil
-import sys
-from datasketch import MinHash
 
 # globals
 nums_per_file = 1000
@@ -29,7 +21,7 @@ random.seed(10)
 setA = set([])
 setB = set([])
 
-m1, m2 = MinHash(num_perm=1024), MinHash(num_perm=1024)
+tempJaccardVal = 0.0
 
 
 class FileArr:
@@ -37,14 +29,20 @@ class FileArr:
         self.fileVar = self.openFile(fileName)
         self.headCounter = 0
 
-    def getList(self):
-        return [line for line in self.fileVar.readlines()]
+    def getTopElm(self):
+        number = self.fileVar.readline()
+        if(number == ''):
+            return None
+        return int(number)
     
     def openFile(self, fileName):
         return open(fileName,'r')
-    
+
     def closeFile(self):
         self.fileVar.close()
+    
+    def getList(self):
+        return [line for line in self.fileVar.readlines()]
 
 
 def fileWrite1(fileName1):
@@ -95,6 +93,9 @@ def splitFilesA(fileName1):
             A.clear()
             num_splitFiles_A+=1
     f.close()
+    # Print no. of files created after splitting
+    print('\nNo. of split files created for A.txt : ',num_splitFiles_A)
+
 
 def splitFilesB(fileName2):
     print("\nSplitting B.txt file ..." )
@@ -114,46 +115,42 @@ def splitFilesB(fileName2):
             B.clear()
             num_splitFiles_B+=1
     f.close()
+    print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
 
-def setMakerA(partFile):
-    if(len(setA) != 0):
-        setA.clear()
-    listToLoad = partFile.getList()
-    for i in listToLoad:
-        setA.add(i)
-
-def setMakerB(partFile):
-    if(len(setB) != 0):
-        setB.clear()
-    listToLoad = partFile.getList()
-    for i in listToLoad:
-        setB.add(i)
+def jaccardCal(setA,setB):
+    # return (len(setA & setB) / len(setA | setB))
+    if(len(setA) == 0 and len(setB) == 0):
+        return 1
+    return (len(setA.intersection(setB)) / len(setA.union(setB)))
 
 def genJaccard(file1,file2):
+    global tempJaccardVal
     # Creating Split Files
     splitFilesA(file1)
     splitFilesB(file2)
 
+    FileArrList1 = [FileArr('./tempA/file' + str(i) + '.txt') for i in range(num_splitFiles_A)]
+    FileArrList2 = [FileArr('./tempB/file' + str(i) + '.txt') for i in range(num_splitFiles_B)]
+
     print("\nStarting Calculation: \n")
-    for i in range(num_splitFiles_A):
-        sys.stdout.write('\r')
-        partFileA = FileArr('./tempA/file' + str(i) + '.txt')
-        partFileB = FileArr('./tempB/file' + str(i) + '.txt')
+    for i in range(nums_per_file):
+        if(len(setA) != 0):
+            setA.clear()
 
-        setMakerA(partFileA)
-        setMakerB(partFileB)
+        if(len(setB) != 0):
+            setB.clear()
 
-        partFileA.closeFile()
-        partFileB.closeFile()
+        for x in range(num_splitFiles_A):
+            setA.add(FileArrList1[x].getTopElm())
+            setB.add(FileArrList2[x].getTopElm())
 
-        for d in setA:
-            m1.update(d.encode('utf8'))
-        for d in setB:
-            m2.update(d.encode('utf8'))
+        tempJaccardVal += jaccardCal(setA,setB)
 
-        # set progress
-        sys.stdout.write("[{:20}] {} %".format('=='*int(round(i/nums_per_file,1)*10), 10*int(round(i/nums_per_file,1)*10)))
-        sys.stdout.flush()
+    print('Estimated Jaccard Value: ', tempJaccardVal)
+    for i in range(len(FileArrList1)):
+        FileArrList1[i].closeFile()
+        FileArrList2[i].closeFile()
+        
 
 
 def main():
@@ -167,17 +164,23 @@ def main():
     fileWrite1(fileName1)
     fileWrite2(fileName2)
 
-    # Print no. of files created after splitting
-    print('\nNo. of split files created for A.txt : ',num_splitFiles_A)
-
-    print('\nNo. of split files created for B.txt : ',num_splitFiles_B)
 
     genJaccard(fileName1,fileName2)
 
     # print('\n\nEstimated Jaccard Value', jaccardValue)
 
-    print("\n\nEstimated Jaccard for A.txt and B.txt is", m1.jaccard(m2))
-
 
 
 main()
+
+# Original Val
+f1 = FileArr('./A.txt')
+f2 = FileArr('./B.txt')
+s1,s2 = set(),set()
+for i in f1.getList():
+    s1.add(int(i))
+
+for x in f2.getList():
+    s2.add(int(x))
+
+print('Orig', jaccardCal(s1,s2))
