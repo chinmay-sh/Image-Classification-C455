@@ -65,6 +65,7 @@ def splitFiles():
                 fx.write(str(i) + '\n')
             readNums.clear()
             num_splitFiles+=1
+            fx.close()
     f.close()
 
 def tempFileCleanup():
