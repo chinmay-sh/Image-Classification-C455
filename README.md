@@ -1,3 +1,5 @@
-# COMP 455 - Labs
+# COMP 455 - Project
 
-## Run on SSD for faster performance
+## Team 5
+ - Chinmay Sharma #300157594
+ - Sahibdeep Singh #300156800
